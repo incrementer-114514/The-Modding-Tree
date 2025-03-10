@@ -1,19 +1,19 @@
 let modInfo = {
-	name: "The ??? Tree",
+	name: "The idle-idle Tree",
 	author: "nobody",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
+	initialStartPoints: new Decimal (1), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.1",
+	name: "first",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -39,9 +39,21 @@ function canGenPoints(){
 // Calculate points/sec!
 function getPointGen() {
 	if(!canGenPoints())
-		return new Decimal(0)
-
-	let gain = new Decimal(1)
+	return new Decimal(0)
+	let gain = new Decimal(2)
+	if (hasMilestone('m',1)) gain = gain.times(2)
+	if (hasMilestone('m',2)) gain = gain.times(5)
+	if (hasMilestone('m',3)) gain = gain.times(10)
+	if (hasMilestone('m',4)) gain = gain.times(5)
+	if (hasMilestone('m',5)) gain = gain.times(2)
+	gain = gain.times(layers.p.effect())
+	if(hasChallenge('o',13)) gain = gain.times(1000)
+	gain = gain.times(tmp.f.effect)
+	if (hasUpgrade('p', 32)) gain = gain.times(5)
+	if (hasUpgrade('f', 11)) gain = gain.times(5)
+	if (hasUpgrade('p', 11)) gain = gain.times(upgradeEffect("p", 11))
+	if (hasUpgrade('b', 13)) gain = gain.times(upgradeEffect("b", 13))
+	gain = gain.times(layers.b.effect())
 	return gain
 }
 
@@ -55,7 +67,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return player.points.gte(new Decimal("e28000000000000000"))
 }
 
 
